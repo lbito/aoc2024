@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
 func LoadRaw(fname string) (string, error) {
 	fPath := filepath.Join("data", fname)
-	fmt.Println("fPath", fPath)
 	content, err := os.ReadFile(fPath)
 	if err != nil {
 		return "", fmt.Errorf("error reading file: %w", err)
@@ -29,4 +29,26 @@ func LoadLines(rawString string) []string {
 func LoadData(fname string) ([]string, error) {
 	rawString, _ := LoadRaw(fname)
 	return LoadLines(rawString), nil
+}
+
+func LoadDataAsInts(fname string) ([][]int, error) {
+	lines, _ := LoadData(fname)
+	data := make([][]int, len(lines))
+	for i, line := range lines {
+		data[i] = make([]int, len(strings.Fields(line)))
+		for j, field := range strings.Fields(line) {
+			data[i][j], _ = strconv.Atoi(field)
+		}
+	}
+	return data, nil
+}
+
+// assume all rows have the same number of columns
+func MatrixLength(data [][]int) int {
+	return len(data) * len(data[0])
+}
+
+// 1d to 2d co-ord
+func CoOrd2D(index int, m int, n int) (int, int) {
+	return index / n, index % n
 }
