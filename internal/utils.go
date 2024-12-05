@@ -17,6 +17,16 @@ func LoadRaw(fname string) (string, error) {
 	return string(content), nil
 }
 
+// func LoadRunes(rawString string) [][]rune {
+// 	//load into 2d array of runes
+// 	lines := strings.Split(rawString, "\n")
+// 	rows := make([][]rune, len(lines))
+// 	for i := range lines {
+// 		rows[i] = []rune(lines[i])
+// 	}
+// 	return rows
+// }
+
 // LoadLines loads a file and returns a slice of strings, one for each line in the file.
 func LoadLines(rawString string) []string {
 	lines := strings.Split(rawString, "\n")
@@ -27,7 +37,10 @@ func LoadLines(rawString string) []string {
 }
 
 func LoadData(fname string) ([]string, error) {
-	rawString, _ := LoadRaw(fname)
+	rawString, err := LoadRaw(fname)
+	if err != nil {
+		panic("err")
+	}
 	return LoadLines(rawString), nil
 }
 
