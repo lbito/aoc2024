@@ -55,10 +55,14 @@ func partOne(maze [][]int) int {
 func walkMaze(maze [][]int) MazeResult {
 	x, y := getGuardPosition(maze)
 	direction := Up
-	visitedSquares := make(map[Position]bool)        //include direction as a visited square, with same direction will always result in a loop!
+	visitedSquares := make(map[Position]bool) //include direction as a visited square, with same direction = cyclical
+	for imminentCollision(maze, x, y, direction) {
+		direction = (direction + 1) % 4
+	}
 	visitedSquares[Position{x, y, direction}] = true // add the starting position
+
 	for !escaped(maze, x, y) {
-		if imminentCollision(maze, x, y, direction) {
+		for imminentCollision(maze, x, y, direction) {
 			direction = (direction + 1) % 4
 		}
 		x, y = stepMaze(x, y, direction)
@@ -88,8 +92,6 @@ func walkMaze(maze [][]int) MazeResult {
 
 func partTwo(maze [][]int) int {
 	//find how many possible positions a single obstacle can be placed in the maze such that the guard never escapes
-	//constraint: the obstacle must not be on the guards starting position
-	//BRUTE FORCE
 
 	//walk maze first to find all possible obstacle placements (filter unreachable squares)
 	solvedDefault := walkMaze(maze)
@@ -101,7 +103,6 @@ func partTwo(maze [][]int) int {
 		potentialObstaclePlacements[[2]int{k.x, k.y}] = true
 	}
 
-	fmt.Println("Potential Obstacle Placements: ", len(potentialObstaclePlacements))
 	cyclesFound := 0
 
 	for placement := range potentialObstaclePlacements {
@@ -157,7 +158,7 @@ func getGuardPosition(Maze [][]int) (int, int) {
 	panic("Guard not found")
 }
 
-// return new Guard Position
+// walk a step in a single direction
 func stepMaze(x, y, direction int) (int, int) {
 	switch direction {
 	case Up:
