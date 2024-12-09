@@ -8,6 +8,13 @@ import (
 	"strings"
 )
 
+func AbsVal(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 func LoadRaw(fname string) (string, error) {
 	fPath := filepath.Join("data", fname)
 	content, err := os.ReadFile(fPath)
