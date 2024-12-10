@@ -1,2 +1,3 @@
 .vscode
 data/*
+cmd/day9/main.go
