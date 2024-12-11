@@ -37,7 +37,7 @@ data/2.txt
 - [x] Day 8
 - [ ] Day 9
 - [x] Day 10
-- [ ] Day 11
+- [x] Day 11
 - [ ] Day 12
 - [ ] Day 13
 - [ ] Day 14
